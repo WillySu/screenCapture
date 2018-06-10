@@ -1,0 +1,12 @@
+
+https://stackoverflow.com/questions/20589097/how-to-capture-desktop-screen-of-computer-host-where-its-running-on-using-node
+
+https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
+
+screencapture -S screengrab.pdf ; sips -s format png screengrab.pdf --out screengrab.png
+
+http://hints.macworld.com/article.php?story=20020824215539350
+
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/skeleton_website
+
+https://stackoverflow.com/questions/5823722/how-to-serve-an-image-using-nodejs
