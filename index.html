@@ -3,20 +3,26 @@
   <head>
     <title>Main</title>
     <script src="js/index.js"></script>
+    <link rel="stylesheet" href="css/index.css">
   </head>
   <body>
     <div>
-      <form name="timerForm">
-        <input name="slider" type="range" min="1" max="10" value="3" />
-        <input name="sliderVal" type="type" value="3" size="1" readOnly />
-        <select name="unit">
-          <option value="min">min.</option>
-          <option value="sec">sec.</option>
-        </select>
+      <form class="control-form" name="timerForm">
+        <div class="control-header">Screen Print Timer</div>
+        <div class="control-content">
+          <input name="slider" type="range" min="1" max="10" value="3" />
+          <input name="sliderVal" type="type" value="3" size="1" readOnly />
+          <select name="unit">
+            <option value="min">min.</option>
+            <option value="sec">sec.</option>
+          </select>
+          <button name="startBtn" type="button">Start</button>
+          <button name="stopBtn" type="button" disabled="true">Stop</button>
+          <div class="control-list-holder">
+            Screen Print here!
+          </div>
+        </div>
       </form>
-    </div>
-    <div>
-      Screen Print here!
     </div>
   </body>
 </html>

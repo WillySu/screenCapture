@@ -1,18 +1,18 @@
-const http = require('http'),
-    childProcess = require('child_process'),
-    fs = require('fs'),
-    url = require('url');
-
-function getFile ({ fileName, callback, res }) {
-  fs.access(fileName, fs.constants.F_OK | fs.constants.R_OK, (err) => {
-    if (err) {
-      res.writeHead(200, { 'Content-Type': 'text/plain' });
-      res.end(`${fileName} does not exist`);
-    } else {
-      callback(fs.readFileSync(fileName), res);
-    }
-  });
-}
+const http = require('http');
+const childProcess = require('child_process');
+const url = require('url');
+const {
+  createFolders,
+  getCssFile,
+  getHtmlFile,
+  getFile,
+  getJsFile,
+  getPngFile,
+  saveScreenPrint
+} = require('./server/fileHelper');
+const {
+  isScreenPrintPath
+} = require('./server/routes');
 
 function getScreenPrint (res) {
   const fileName = 'screen';
@@ -24,14 +24,7 @@ function getScreenPrint (res) {
       res.writeHead(200, { 'Content-Type': 'text/plain' });
       res.end(`Unable to generate the screen print`);
     } else {
-      getFile({
-        fileName: fileFullName,
-        callback: (f, r) => {
-          r.writeHead(200, { 'Content-Type': 'image/png' });
-          r.end(f, 'binary');
-        },
-        res: res
-      });
+      getPngFile({ fileName: fileFullName, res });
     }
   });
 }
@@ -41,25 +34,15 @@ http.createServer(function (req, res) {
   const request = url.parse(req.url, true);
   const action = request.pathname;
 
-  if (action == '/screenprint.png') {
+  if (isScreenPrintPath(action)) {
+    saveScreenPrint(res);
+  } else if (action === '/screenprint.png') {
     getScreenPrint(res);
-  } else if (action == '/js/index.js') {
-    getFile({
-      fileName: 'js/index.js',
-      callback: (f, r) => {
-        r.writeHead(200, { 'Content-Type': 'application/x-javascript' });
-        r.end(f, 'utf8');
-      },
-      res: res
-    });
+  } else if (action === '/js/index.js') {
+    getJsFile({ fileName: 'js/index.js', res });
+  } else if (action === '/css/index.css') {
+    getCssFile({ fileName: 'css/index.css', res });
   } else {
-    getFile({
-      fileName: './index.html',
-      callback: (f, r) => {
-        r.writeHead(200, { 'Content-Type': 'text/html' });
-        r.end(f, 'utf8');
-      },
-      res: res
-    })
+    getHtmlFile({ fileName: 'index.html', res });
   }
 }).listen(4040); //the server object listens on port 8080
